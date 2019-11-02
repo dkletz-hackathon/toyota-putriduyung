@@ -33,14 +33,23 @@ class ParkingLotsMap extends Component {
   }
 
   componentDidMount () {
-    const {fetchParkingLots, setUserLocation} = this.props
+    const {fetchParkingLots} = this.props
     this.intervalCall = setInterval(() => fetchParkingLots(this.state.region, DefaultRange), 10500)
-    this.geoWatchId = geolocation.watchPosition(position => setUserLocation(position.coords))
+    this.listenToLocationChange()
+  }
+
+  listenToLocationChange = async () => {
+    const {setUserLocation} = this.props
+    if (await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)) {
+      this.geoWatchId = geolocation.watchPosition(position => setUserLocation(position.coords))
+    }
   }
 
   componentWillUnmount () {
     clearInterval(this.intervalCall)
-    geolocation.clearWatch(this.geoWatchId)
+    if (this.geoWatchId) {
+      geolocation.clearWatch(this.geoWatchId)
+    }
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -78,7 +87,11 @@ class ParkingLotsMap extends Component {
   onMapReady = () => {
     PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-    )
+    ).then(granted => {
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        this.listenToLocationChange()
+      }
+    })
   }
 
   render () {

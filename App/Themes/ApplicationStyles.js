@@ -7,12 +7,15 @@ import Colors from './Colors'
 
 const ApplicationStyles = {
   section: {
+    wrapper: {
+      marginBottom: 25
+    },
     title: {
       color: '#616161',
       fontWeight: '600',
       fontSize: 12,
       letterSpacing: 1,
-      marginBottom: 25
+      marginBottom: 15
     }
   },
   screen: {

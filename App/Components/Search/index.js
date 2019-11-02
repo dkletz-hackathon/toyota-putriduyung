@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
   },
   recentWrapper: {
     flexDirection: 'row',
-    marginBottom: 25
+    marginBottom: 20,
+    marginTop: 5
   },
   recentInfo: {
     marginLeft: 15

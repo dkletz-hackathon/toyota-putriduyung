@@ -16,6 +16,11 @@ const InitialRegion = {
 
 const DefaultRange = 1000
 
+const mapText = {
+  color: 'white',
+  fontWeight: '500'
+}
+
 class ParkingLotsMap extends Component {
   constructor (props) {
     super(props)
@@ -83,9 +88,11 @@ class ParkingLotsMap extends Component {
             }}
             title={parkingLot.name}
           >
-            <View>
-              <Text style={{zIndex: 1, position: 'absolute'}}>{parkingLot.size}</Text>
-              <Image style={{width: 30, height: 30}} source={require('../../Images/circle.png')} />
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <View style={{zIndex: 1, position: 'absolute'}}>
+                <Text style={mapText}>{parkingLot.size}</Text>
+              </View>
+              <Image style={{width: 40, height: 40}} source={require('../../Images/circle.png')} />
             </View>
           </Marker>
         )) : null}

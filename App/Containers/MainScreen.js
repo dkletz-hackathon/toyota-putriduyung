@@ -42,7 +42,8 @@ export default class MainScreen extends React.Component {
     this.state = {
       modalYPos: new Animated.Value(
         -ModalHeight + SearchHeight
-      )
+      ),
+      filters: []
     }
   }
 
@@ -88,6 +89,24 @@ export default class MainScreen extends React.Component {
     })
   }
 
+  onChangeFilters = filters => {
+    const newFilters = filters.filter(filter => filter.checked)
+      .map(filter => {
+        switch (filter.name) {
+          case 'Sedan':
+            return 1
+          case 'Motorcycle':
+            return 0
+          case 'Minivan':
+            return 2
+        }
+      }
+    )
+    this.setState({
+      filters: newFilters
+    })
+  }
+
   render () {
     return (
       <View style={styles.container}>
@@ -109,9 +128,9 @@ export default class MainScreen extends React.Component {
           <View style={{alignItems: 'center'}}>
             <View style={styles.modal.drag} />
           </View>
-          <Search />
+          <Detail onChangeFilters={this.onChangeFilters} />
         </Animated.View>
-        <ParkingLotsMap />
+        <ParkingLotsMap filters={this.state.filters} />
       </View>
     )
   }

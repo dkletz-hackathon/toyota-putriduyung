@@ -108,6 +108,7 @@ export default class Detail extends React.Component {
   }
 
   setFilter(i) {
+    const {onChangeFilters} = this.props
     let {filters} = this.state
     filters[i].checked = !filters[i].checked
     if (filters[i].checked) {
@@ -119,6 +120,7 @@ export default class Detail extends React.Component {
       if (filters[i].name === 'Minivan') filters[i].icon = 'van'
       if (filters[i].name === 'Motorcycle') filters[i].icon = 'motor'
     }
+    onChangeFilters(filters)
     this.setState({filters})
   }
 

@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import MapView, {Marker} from 'react-native-maps'
 import {Dimensions} from 'react-native'
 
-import Creators from '../../Redux/ParkingLotsRedux'
+import Creators, {ParkingLotsSelectors} from '../../Redux/ParkingLotsRedux'
 
 const InitialRegion = {
   latitude: -6.2290459,
@@ -51,7 +51,9 @@ class ParkingLotsMap extends Component {
   }
 
   render () {
-    const { parkingLots } = this.props
+    const { getParkingLots, filters } = this.props
+    const parkingLots = getParkingLots(filters)
+    console.log(parkingLots)
     return (
       <MapView
         ref={ref => { this.map = ref }}
@@ -76,7 +78,7 @@ class ParkingLotsMap extends Component {
 
 const mapStateToProps = state => {
   return {
-    parkingLots: state.parkingLots.data,
+    getParkingLots: (filters) => ParkingLotsSelectors.getParkingLots(state, filters),
     searchLocation: state.search.location
   }
 }

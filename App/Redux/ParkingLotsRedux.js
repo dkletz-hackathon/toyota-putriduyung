@@ -24,7 +24,17 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const ParkingLotsSelectors = {
-  getData: state => state.parkingLots.data
+  getParkingLots: (state, filters) => {
+    if (filters === undefined || filters.length === 0) {
+      return state.parkingLots.data
+    }
+    return state.parkingLots.data.map(parkingLot => ({
+      ...parkingLot,
+      size: parkingLot.spaces
+        .filter(space => filters.includes(space.size))
+        .reduce((total) => total + 1, 0)
+    }))
+  }
 }
 
 /* ------------- Reducers ------------- */

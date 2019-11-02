@@ -10255,6 +10255,16 @@ react-native-maps@0.25.0:
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.25.0.tgz#81bc51eb50e33811a9e1c345cc48869413ead67d"
   integrity sha512-PFJuW1pt+HnnnN0m0OGk29RSvICFVkK/DScX6cUk0SuCSN2DAHx0y6y57lZyYXcYqU4J4usNpfxgp/ccjASDiw==
 
+react-native-pulsating-circle@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-pulsating-circle/-/react-native-pulsating-circle-1.0.0.tgz#7edd00f257547ea480ebde2fdd3c0c022dab54b8"
+  integrity sha512-AJjTcz0AeEiL2rHwy2N1HcYA8S2OVOAE5oJcHKkddJ8MU6qVKASWcE2KDWrK7POG/UoNwuW+ukQ45/egRLW9JA==
+
+react-native-pulse@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/react-native-pulse/-/react-native-pulse-1.0.7.tgz#5a8dc60cb6585f90ce8400beb74fbf89e5f7cd1b"
+  integrity sha512-PQvek/hC2YZddzJgyJT9FZbg37eZKl1rcYNlHbSItL3XZ0n3zF5jxFRrYLyGqHnRuRPHoY7qnrdHe4qVwy3Jnw==
+
 react-native-safe-area-view@^0.14.1:
   version "0.14.8"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.14.8.tgz#ef33c46ff8164ae77acad48c3039ec9c34873e5b"

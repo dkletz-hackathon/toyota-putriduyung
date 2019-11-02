@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import MapView, {Marker} from 'react-native-maps'
-import {Dimensions} from 'react-native'
+import {Dimensions, View, Image, Text} from 'react-native'
+import * as Animatable from 'react-native-animatable'
 
 import Creators, {ParkingLotsSelectors} from '../../Redux/ParkingLotsRedux'
 
@@ -69,7 +70,12 @@ class ParkingLotsMap extends Component {
               longitude: parkingLot.longitude
             }}
             title={parkingLot.name}
-          />
+          >
+            <View>
+              <Text style={{zIndex: 1, position: 'absolute'}}>{parkingLot.size}</Text>
+              <Image style={{width: 30, height: 30}} source={require('../../Images/circle.png')} />
+            </View>
+          </Marker>
         )) : null}
       </MapView>
     )

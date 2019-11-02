@@ -39,7 +39,8 @@ const styles = {
   address: {
     wrapper: {
       flexDirection: 'row',
-      marginBottom: 20
+      marginBottom: 30,
+      marginRight: 30
     },
     icon: {
       width: 25,
@@ -77,12 +78,62 @@ const styles = {
         color: 'white'
       }
     }
+  },
+  capacity: {
+    icon: {
+      width: 20,
+      height: 20,
+      marginRight: 10
+    },
+    name: {
+      fontSize: 14,
+      color: '#313131',
+      fontWeight: '500'
+    },
+    info: {
+      fontSize: 14,
+      color: '#232323',
+      fontWeight: '600'
+    },
+    wrapper: {
+      flexDirection: 'row',
+      marginBottom: 12,
+      justifyContent: 'space-between'
+    }
+  },
+  button: {
+    backgroundColor: '#0043EF',
+    paddingVertical: 20
   }
 }
 
 class Detail extends React.Component {
   constructor (props) {
     super(props)
+    this.state = {
+      capacity: [
+        {
+          name: 'Car parking',
+          capacity: 142,
+          icon: 'car_2'
+        },
+        {
+          name: 'Motorcycle parking',
+          capacity: 120,
+          icon: 'motor_2'
+        },
+        {
+          name: 'Disabled parking',
+          capacity: 15,
+          icon: 'disabled'
+        },
+        {
+          name: 'Ladies parking',
+          capacity: 25,
+          icon: 'ladies'
+        }
+      ]
+    }
   }
 
   render () {
@@ -93,9 +144,27 @@ class Detail extends React.Component {
           <Icon icon='map' style={styles.address.icon} />
           <Text style={styles.address.text}>Jl. Letjen S. Parman No.28, Duren Sel., Kec. Grogol petamburan, Kota Jakarta Barat</Text>
         </View>
+        <View style={ApplicationStyles.section.wrapper}>
+          <Text style={ApplicationStyles.section.title}>CAPACITY</Text>
+          {
+            this.state.capacity.map(c => {
+              return (
+                <View style={styles.capacity.wrapper}>
+                  <View style={styles.row}>
+                    <Icon icon={c.icon} style={styles.capacity.icon} />
+                    <Text style={styles.capacity.name}>{c.name}</Text>
+                  </View>
+                  <Text style={styles.capacity.info}>{c.capacity} slots</Text>
+                </View>
+              )
+            })
+          }
+        </View>
         <Button
           text='Book Parking Space'
-          onPress={() => this.props.navigation.navigate('Checkout')}
+          containerStyle={styles.button}
+          style={{fontWeight: '600'}}
+          onPressIn={() => this.props.navigation.navigate('Checkout')}
         />
       </View>
     )

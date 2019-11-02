@@ -7,6 +7,7 @@ const { Types, Creators } = createActions({
   parkingLotsRequest: ['location, range'],
   parkingLotsSuccess: ['payload'],
   setActiveParkingLotId: ['id'],
+  setUserLocation: ['location'],
   removeActiveParkingLot: null,
   parkingLotsFailure: null
 })
@@ -19,6 +20,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   data: null,
   activeParkingLotId: null,
+  userLocation: null,
   fetching: null,
   payload: null,
   error: null
@@ -95,6 +97,9 @@ export const failure = state =>
 export const setActive = (state, { id }) =>
   state.merge({ activeParkingLotId: id })
 
+export const setUserLocation = (state, { location }) =>
+  state.merge({ userLocation: location })
+
 export const removeActive = state =>
   state.merge({ activeParkingLotId: null })
 
@@ -105,5 +110,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.PARKING_LOTS_SUCCESS]: success,
   [Types.PARKING_LOTS_FAILURE]: failure,
   [Types.SET_ACTIVE_PARKING_LOT_ID]: setActive,
-  [Types.REMOVE_ACTIVE_PARKING_LOT]: removeActive
+  [Types.REMOVE_ACTIVE_PARKING_LOT]: removeActive,
+  [Types.SET_USER_LOCATION]: setUserLocation
 })

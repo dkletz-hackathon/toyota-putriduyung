@@ -1,6 +1,7 @@
 import React from 'react'
-import {View, Text} from 'react-native'
+import {View, Text, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
+import getDirections from 'react-native-google-maps-directions'
 
 import {ParkingLotsSelectors} from '../../Redux/ParkingLotsRedux'
 import Icon from '../Icon'
@@ -41,6 +42,7 @@ const styles = {
   },
   address: {
     wrapper: {
+      width: '100%',
       flexDirection: 'row',
       marginBottom: 30,
       marginRight: 30
@@ -131,6 +133,31 @@ class Detail extends React.Component {
     }
   }
 
+  handleNavigate = () => {
+    const {activeParkingLotId, getParkingLot, userLocation} = this.props
+    const activeParkingLot = getParkingLot(activeParkingLotId)
+
+    const data = {
+      source: userLocation,
+      destination: {
+        latitude: activeParkingLot.latitude,
+        longitude: activeParkingLot.longitude
+      },
+      params: [
+        {
+          key: 'travelmode',
+          value: 'driving'
+        },
+        {
+          key: 'dir_action',
+          value: 'navigate'
+        }
+      ]
+    }
+
+    getDirections(data)
+  }
+
   render () {
     const {activeParkingLotId, getParkingLot} = this.props
     const activeParkingLot = getParkingLot(activeParkingLotId)
@@ -145,6 +172,10 @@ class Detail extends React.Component {
         <View style={styles.address.wrapper}>
           <Icon icon='map' style={styles.address.icon} />
           <Text style={styles.address.text}>{activeParkingLot.address}</Text>
+          <View style={{flex: 1}} />
+          <TouchableOpacity onPress={this.handleNavigate}>
+            <Icon icon='navigation' style={{width: 18, height: 18, marginRight: 10}} />
+          </TouchableOpacity>
         </View>
         <View style={ApplicationStyles.section.wrapper}>
           <Text style={ApplicationStyles.section.title}>CAPACITY</Text>
@@ -175,6 +206,7 @@ class Detail extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    userLocation: state.parkingLots.userLocation,
     activeParkingLotId: state.parkingLots.activeParkingLotId,
     getParkingLot: id => ParkingLotsSelectors.getParkingLot(state, id)
   }

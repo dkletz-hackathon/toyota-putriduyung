@@ -8,7 +8,8 @@ import Creators from '../../Redux/SearchRedux'
 
 const filter = {
   wrapper: {
-    padding: 15,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
     borderColor: '#0043EF',
     backgroundColor: 'white',
     borderWidth: 1,
@@ -43,7 +44,7 @@ const styles = {
   searchWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 25
+    marginBottom: 16
   },
   searchText: {
     marginLeft: 12,
@@ -123,7 +124,7 @@ class Search extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      recent: [1, 2, 3],
+      recent: [1, 2],
       filters: [
         {
           name: 'Sedan',

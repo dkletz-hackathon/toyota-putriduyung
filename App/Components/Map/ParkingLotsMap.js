@@ -52,9 +52,8 @@ class ParkingLotsMap extends Component {
   }
 
   render () {
-    const { getParkingLots, filters } = this.props
+    const { getParkingLots, filters, setActive } = this.props
     const parkingLots = getParkingLots(filters)
-    console.log(parkingLots)
     return (
       <MapView
         ref={ref => { this.map = ref }}
@@ -65,6 +64,10 @@ class ParkingLotsMap extends Component {
       >
         {parkingLots ? parkingLots.map(parkingLot => (
           <Marker
+            onPress={() => {
+              console.log(parkingLot.id)
+              setActive(parkingLot.id)
+            }}
             coordinate={{
               latitude: parkingLot.latitude,
               longitude: parkingLot.longitude
@@ -91,7 +94,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchParkingLots: (location, range) => dispatch(Creators.parkingLotsRequest({ location, range }))
+    fetchParkingLots: (location, range) => dispatch(Creators.parkingLotsRequest({ location, range })),
+    setActive: (id) => dispatch(Creators.setActiveParkingLotId(id))
   }
 }
 

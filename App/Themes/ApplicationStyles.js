@@ -8,7 +8,7 @@ import Colors from './Colors'
 const ApplicationStyles = {
   section: {
     wrapper: {
-      marginBottom: 25
+      marginBottom: 16
     },
     title: {
       color: '#616161',

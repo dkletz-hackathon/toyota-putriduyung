@@ -6,6 +6,8 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   parkingLotsRequest: ['location, range'],
   parkingLotsSuccess: ['payload'],
+  setActiveParkingLotId: ['id'],
+  removeActiveParkingLot: null,
   parkingLotsFailure: null
 })
 
@@ -16,6 +18,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   data: null,
+  activeParkingLotId: null,
   fetching: null,
   payload: null,
   error: null
@@ -38,6 +41,13 @@ export const ParkingLotsSelectors = {
         .filter(space => space.empty)
         .reduce((total) => total + 1, 0)
     }))
+  },
+
+  getParkingLot: (state, id) => {
+    if (id === null || id === undefined) {
+      return null
+    }
+    return state.parkingLots.data.find(parkingLot => parkingLot.id === id)
   }
 }
 
@@ -57,10 +67,18 @@ export const success = (state, action) => {
 export const failure = state =>
   state.merge({ fetching: false, error: true, payload: null })
 
+export const setActive = (state, { id }) =>
+  state.merge({ activeParkingLotId: id })
+
+export const removeActive = state =>
+  state.merge({ activeParkingLotId: null })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.PARKING_LOTS_REQUEST]: request,
   [Types.PARKING_LOTS_SUCCESS]: success,
-  [Types.PARKING_LOTS_FAILURE]: failure
+  [Types.PARKING_LOTS_FAILURE]: failure,
+  [Types.SET_ACTIVE_PARKING_LOT_ID]: setActive,
+  [Types.REMOVE_ACTIVE_PARKING_LOT]: removeActive
 })

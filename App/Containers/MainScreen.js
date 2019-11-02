@@ -1,8 +1,10 @@
 import React from 'react'
-import { View, StyleSheet, PanResponder, Animated, Dimensions } from 'react-native'
+import { View, PanResponder, Animated, Dimensions } from 'react-native'
+import {connect} from 'react-redux'
+
+import {ParkingLotsSelectors} from '../Redux/ParkingLotsRedux'
 import Search from '../Components/Search'
 import Detail from '../Components/Detail'
-import {Metrics} from '../Themes'
 import ParkingLotsMap from '../Components/Map/ParkingLotsMap'
 
 const styles = {
@@ -15,7 +17,7 @@ const styles = {
       backgroundColor: '#D9E3FF',
       height: 5,
       width: 50,
-      marginBottom: 30,
+      marginBottom: 24,
       borderRadius: 20
     },
     wrapper: {
@@ -33,10 +35,10 @@ const styles = {
 }
 
 const ModalHeight = Dimensions.get('window').height * 60 / 100
-const SearchHeight = 168
+let SearchHeight = 196
 const VelocityModalClose = 0.05
 
-export default class MainScreen extends React.Component {
+class MainScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -50,6 +52,13 @@ export default class MainScreen extends React.Component {
   closeModal = () => {
     Animated.timing(this.state.modalYPos, {
       toValue: -ModalHeight + SearchHeight,
+      duration: 300
+    }).start()
+  }
+
+  closeModalAsDetail = () => {
+    Animated.timing(this.state.modalYPos, {
+      toValue: -ModalHeight + 300,
       duration: 300
     }).start()
   }
@@ -108,6 +117,16 @@ export default class MainScreen extends React.Component {
   }
 
   render () {
+    const { activeParkingLotId, getParkingLot } = this.props
+    const activeParkingLot = getParkingLot(activeParkingLotId)
+    const isSearch = activeParkingLot === null || activeParkingLot === undefined
+
+    console.log(activeParkingLot, isSearch)
+
+    if (!isSearch) {
+      this.closeModalAsDetail()
+    }
+
     return (
       <View style={styles.container}>
         <Animated.View
@@ -128,10 +147,26 @@ export default class MainScreen extends React.Component {
           <View style={{alignItems: 'center'}}>
             <View style={styles.modal.drag} />
           </View>
-          <Search onChangeFilters={this.onChangeFilters} />
+          {
+            isSearch
+              ? <Search onChangeFilters={this.onChangeFilters} />
+              : <Detail />
+          }
         </Animated.View>
         <ParkingLotsMap filters={this.state.filters} />
       </View>
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    activeParkingLotId: state.parkingLots.activeParkingLotId,
+    getParkingLot: (id) => ParkingLotsSelectors.getParkingLot(state, id)
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(MainScreen)

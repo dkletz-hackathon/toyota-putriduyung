@@ -42,7 +42,7 @@ const styles = {
     icon: {
       width: 25,
       height: 25,
-      marginRight: 12,
+      marginRight: 12
       // backgroundColor: 'blue'
     },
     text: {
@@ -79,7 +79,7 @@ const styles = {
 }
 
 export default class Detail extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       filters: [
@@ -103,11 +103,11 @@ export default class Detail extends React.Component {
     this.filterStyle = this.filterStyle.bind(this)
   }
 
-  filterStyle(checked) {
+  filterStyle (checked) {
     return checked ? styles.filter.checked : styles.filter.unchecked
   }
 
-  setFilter(i) {
+  setFilter (i) {
     const {onChangeFilters} = this.props
     let {filters} = this.state
     filters[i].checked = !filters[i].checked
@@ -124,17 +124,17 @@ export default class Detail extends React.Component {
     this.setState({filters})
   }
 
-  render() {
+  render () {
     return (
       <View>
         <Text style={styles.title}>Toyo Parking Letjen S. Parman</Text>
         <View style={styles.address.wrapper}>
-          <Icon icon="map" style={styles.address.icon} />
+          <Icon icon='map' style={styles.address.icon} />
           <Text style={styles.address.text}>Jl. Letjen S. Parman No.28, Duren Sel., Kec. Grogol petamburan, Kota Jakarta Barat</Text>
         </View>
         <View style={ApplicationStyles.section.wrapper}>
           <Text style={ApplicationStyles.section.title}>FILTER</Text>
-          <ScrollView style={styles.carousel} horizontal={true}>
+          <ScrollView style={styles.carousel} horizontal showsHorizontalScrollIndicator={false}>
             {
               this.state.filters.map((f, i) => {
                 return (

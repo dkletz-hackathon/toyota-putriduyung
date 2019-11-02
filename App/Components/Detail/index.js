@@ -1,5 +1,8 @@
 import React from 'react'
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native'
+import {View, Text} from 'react-native'
+import {connect} from 'react-redux'
+
+import {ParkingLotsSelectors} from '../../Redux/ParkingLotsRedux'
 import Icon from '../Icon'
 import Button from '../Button'
 import {withNavigation} from 'react-navigation'
@@ -113,48 +116,47 @@ class Detail extends React.Component {
     this.state = {
       capacity: [
         {
-          name: 'Car parking',
-          capacity: 142,
-          icon: 'car_2'
-        },
-        {
           name: 'Motorcycle parking',
-          capacity: 120,
           icon: 'motor_2'
         },
         {
-          name: 'Disabled parking',
-          capacity: 15,
-          icon: 'disabled'
+          name: 'Car parking',
+          icon: 'car_2'
         },
         {
-          name: 'Ladies parking',
-          capacity: 25,
-          icon: 'ladies'
+          name: 'Minivan parking',
+          icon: 'van'
         }
       ]
     }
   }
 
   render () {
+    const {activeParkingLotId, getParkingLot} = this.props
+    const activeParkingLot = getParkingLot(activeParkingLotId)
+
+    if (!activeParkingLot) {
+      return null
+    }
+
     return (
       <View>
-        <Text style={styles.title}>Toyo Parking Letjen S. Parman</Text>
+        <Text style={styles.title}>{activeParkingLot.name}</Text>
         <View style={styles.address.wrapper}>
           <Icon icon='map' style={styles.address.icon} />
-          <Text style={styles.address.text}>Jl. Letjen S. Parman No.28, Duren Sel., Kec. Grogol petamburan, Kota Jakarta Barat</Text>
+          <Text style={styles.address.text}>{activeParkingLot.address}</Text>
         </View>
         <View style={ApplicationStyles.section.wrapper}>
           <Text style={ApplicationStyles.section.title}>CAPACITY</Text>
           {
-            this.state.capacity.map(c => {
+            this.state.capacity.map((c, index) => {
               return (
                 <View style={styles.capacity.wrapper}>
                   <View style={styles.row}>
                     <Icon icon={c.icon} style={styles.capacity.icon} />
                     <Text style={styles.capacity.name}>{c.name}</Text>
                   </View>
-                  <Text style={styles.capacity.info}>{c.capacity} slots</Text>
+                  <Text style={styles.capacity.info}>{activeParkingLot.sizes[index]} slots</Text>
                 </View>
               )
             })
@@ -171,4 +173,14 @@ class Detail extends React.Component {
   }
 }
 
-export default withNavigation(Detail)
+const mapStateToProps = state => {
+  return {
+    activeParkingLotId: state.parkingLots.activeParkingLotId,
+    getParkingLot: id => ParkingLotsSelectors.getParkingLot(state, id)
+  }
+}
+
+export default withNavigation(connect(
+  mapStateToProps,
+  null
+)(Detail))

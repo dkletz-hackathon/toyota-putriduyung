@@ -2,10 +2,9 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import MapView, {Marker} from 'react-native-maps'
 import {Dimensions, View, Image, Text} from 'react-native'
-import * as Animatable from 'react-native-animatable'
+import debounce from 'debounce'
 
 import Creators, {ParkingLotsSelectors} from '../../Redux/ParkingLotsRedux'
-import { remove } from 'ramda'
 
 const InitialRegion = {
   latitude: -6.2290459,
@@ -29,6 +28,16 @@ class ParkingLotsMap extends Component {
       map: null
     }
     props.fetchParkingLots(InitialRegion, DefaultRange)
+    this.trailDebounce = debounce(props.fetchParkingLots, 500)
+  }
+
+  componentDidMount () {
+    const {fetchParkingLots} = this.props
+    this.intervalCall = setInterval(() => fetchParkingLots(this.state.region, DefaultRange), 10500)
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.intervalCall)
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -50,11 +59,10 @@ class ParkingLotsMap extends Component {
   }
 
   onRegionChange = (region) => {
-    const {fetchParkingLots} = this.props
     this.setState({
       region
     })
-    fetchParkingLots(region, DefaultRange)
+    this.trailDebounce(region, DefaultRange)
   }
 
   onPanDrag = () => {
@@ -79,7 +87,6 @@ class ParkingLotsMap extends Component {
         {parkingLots ? parkingLots.map(parkingLot => (
           <Marker
             onPress={() => {
-              console.log(parkingLot.id)
               setActive(parkingLot.id)
             }}
             coordinate={{

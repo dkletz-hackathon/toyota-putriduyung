@@ -70,22 +70,33 @@ class MainScreen extends React.Component {
     }).start()
   }
 
+  getModalBottomPos = () => {
+    const { activeParkingLotId } = this.props
+    const isSearch = activeParkingLotId === null || activeParkingLotId === undefined
+
+    if (isSearch) {
+      return -ModalHeight + SearchHeight
+    } else {
+      return -ModalHeight + 360
+    }
+  }
+
   componentWillMount () {
     this._panResponder = PanResponder.create({
       onMoveShouldSetResponderCapture: () => true,
       onMoveShouldSetPanResponder: (_, gestureState) => {
-        const {dx, dy} = gestureState
-        return !((dx > 2 || dx <= -2) || (dy > 2 || dy <= -2))
+        const {dy} = gestureState
+        return !((dy > 5 || dy <= -5))
       },
       onMoveShouldSetPanResponderCapture: () => true,
       onPanResponderGrant: (e, gestureState) => {},
 
-      onPanResponderMove: (e, {dx, dy}) => {
-        // console.log(dy, this.state.modalYPos)
+      onPanResponderMove: (e, { moveX, moveY }) => {
+        console.log(moveY, this.state.modalYPos)
         Animated.event([
           null,
-          {dx: null, dy: this.state.modalYPos}
-        ])(e, {dx, dy: -dy})
+          {moveX: null, moveY: this.state.modalYPos}
+        ])(e, {moveX, moveY: -moveY - this.getModalBottomPos()})
       },
 
       onPanResponderRelease: (e, {vx, vy}) => {
@@ -126,14 +137,6 @@ class MainScreen extends React.Component {
 
     this.isSearch = isSearch
 
-    console.log("count")
-
-    if (!isSearch) {
-      this.closeModalAsDetail()
-    } else {
-      this.closeModal()
-    }
-
     return (
       <View style={styles.container}>
         <Animated.View
@@ -160,7 +163,23 @@ class MainScreen extends React.Component {
               : <Detail />
           }
         </Animated.View>
-        <ParkingLotsMap filters={this.state.filters} />
+        <Animated.View
+          style={{zIndex: 0,
+            position: 'absolute',
+            bottom: this.state.modalYPos.interpolate({
+              inputRange: [
+                -ModalHeight + SearchHeight,
+                0
+              ],
+              outputRange: [
+                20,
+                ModalHeight / 2
+              ],
+              extrapolate: 'clamp'
+            })}}
+        >
+          <ParkingLotsMap filters={this.state.filters} />
+        </Animated.View>
       </View>
     )
   }

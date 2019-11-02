@@ -1,4 +1,4 @@
-import { createReducer, createActions } from 'reduxsauce'
+import { createActions, createReducer } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 
 /* ------------- Types and Action Creators ------------- */
@@ -36,10 +36,13 @@ export const ParkingLotsSelectors = {
     }
     return state.parkingLots.data.map(parkingLot => ({
       ...parkingLot,
-      size: parkingLot.spaces
-        .filter(space => filters.includes(space.size))
-        .filter(space => space.empty)
-        .reduce((total) => total + 1, 0)
+      size: parkingLot.sizes
+        .reduce((total, el, index) => {
+          if (filters.includes(index)) {
+            return total + el
+          }
+          return total
+        }, 0)
     }))
   },
 
@@ -60,7 +63,22 @@ export const request = (state, { location, range }) =>
 // successful api lookup
 export const success = (state, action) => {
   const { payload } = action
-  return state.merge({ fetching: false, error: null, data: payload })
+  const data = payload.map(parkingLot => {
+    const sizeCounter = [0, 0, 0]
+    console.log(parkingLot.id)
+    const returnedParkingLot = {
+      ...parkingLot,
+      size: parkingLot.spaces
+        .filter(space => space.empty)
+        .reduce((total, el) => {
+          sizeCounter[el.size]++
+          return total + 1
+        }, 0)
+    }
+    returnedParkingLot.sizes = sizeCounter
+    return returnedParkingLot
+  })
+  return state.merge({ fetching: false, error: null, data })
 }
 
 // Something went wrong somewhere.

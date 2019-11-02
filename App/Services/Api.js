@@ -1,8 +1,9 @@
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce'
+import Geocoder from "react-native-geocoding"
 
 // our "constructor"
-const create = (baseURL = 'https://api.github.com/') => {
+const create = (baseURL = 'https://desolate-anchorage-54298.herokuapp.com/') => {
   // ------
   // STEP 1
   // ------
@@ -37,6 +38,31 @@ const create = (baseURL = 'https://api.github.com/') => {
   const getRoot = () => api.get('')
   const getRate = () => api.get('rate_limit')
   const getUser = (username) => api.get('search/users', {q: username})
+  const getParkingLots = async (location, range) => {
+    const response = await api.get('parking')
+    return {
+      ok: true,
+      data: response.data.data.map(parkingLot => ({
+        ...parkingLot,
+        latitude: parseFloat(parkingLot.latitude),
+        longitude: parseFloat(parkingLot.longitude)
+      }))
+    }
+  }
+  const getLatLong = async ({address}) => {
+    try {
+      const json = await Geocoder.from(address)
+      return {
+        ok: true,
+        data: json.results[0].geometry.location
+      }
+    } catch (err) {
+      console.error(err)
+      return {
+        ok: false
+      }
+    }
+  }
 
   // ------
   // STEP 3
@@ -54,7 +80,9 @@ const create = (baseURL = 'https://api.github.com/') => {
     // a list of the API functions from step 2
     getRoot,
     getRate,
-    getUser
+    getUser,
+    getParkingLots,
+    getLatLong
   }
 }
 

@@ -111,12 +111,10 @@ android {
 
     signingConfigs {
         release {
-            if (project.hasProperty('TOYOTA_UPLOAD_STORE_FILE')) {
-                storeFile file(TOYOTA_UPLOAD_STORE_FILE)
-                storePassword TOYOTA_UPLOAD_STORE_PASSWORD
-                keyAlias TOYOTA_UPLOAD_KEY_ALIAS
-                keyPassword TOYOTA_UPLOAD_KEY_PASSWORD
-            }
+            storeFile file("dkletz-toyota.keystore")
+            storePassword "dkletztoyota"
+            keyAlias "dkletz-toyota"
+            keyPassword "dkletztoyota"
         }
     }
 

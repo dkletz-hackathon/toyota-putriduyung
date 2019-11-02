@@ -1788,8 +1788,8 @@
   {
     "id": 4,
     "name": "Parkiran Mobil Atlantis Ancol",
-    "latitude": -6.128171541203078,
-    "longitude": 106.83808781675043,
+    "latitude": -6.1241833,
+    "longitude": 106.8403043,
     "features": ["disabled", "woman"],
     "spaces": [
       {

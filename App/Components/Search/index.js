@@ -124,7 +124,16 @@ class Search extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      recent: [1, 2],
+      recent: [
+        {
+          name: 'RS Mitra Keluarga Bekasi',
+          address: 'Jl. Guntur 7, Kayuringin Jaya, Bekasi Selatan'
+        },
+        {
+          name: 'Central Park Mall',
+          address: 'Jl. Letjen S. Parman, Grogol Petamburan, Jakarta Barat'
+        }
+      ],
       filters: [
         {
           name: 'Sedan',
@@ -221,8 +230,8 @@ class Search extends React.Component {
                 <View style={styles.recentWrapper}>
                   <Icon icon='map' style={{width: 25, height: 25}} />
                   <View style={styles.recentInfo}>
-                    <Text style={styles.recentName}>Hehe</Text>
-                    <Text style={styles.recentAddress}>Jl. Guntur 7, Kayuringin Jaya, Bekasi Selatan</Text>
+                    <Text style={styles.recentName}>{r.name}</Text>
+                    <Text style={styles.recentAddress}>{r.address}</Text>
                   </View>
                 </View>
               )

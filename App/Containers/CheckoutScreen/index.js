@@ -66,6 +66,26 @@ const styles = {
       fontWeight: 'bold'
     }
   },
+  option: {
+    wrapper: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      borderColor: '#0043EF',
+      borderWidth: 1,
+      marginBottom: 15,
+      paddingVertical: 15,
+      paddingHorizontal: 13,
+      borderRadius: 5
+    },
+    name: {
+      fontSize: 14,
+      fontWeight: 'bold'
+    },
+    change: {
+      fontSize: 12,
+      color: '#0043EF'
+    }
+  },
   separator: {
     borderBottomWidth: 1,
     borderBottomColor: '#DCDCDC',
@@ -212,6 +232,10 @@ class CheckoutScreen extends React.Component {
           <View style={styles.separator} />
           <View style={styles.part}>
             <Text style={ApplicationStyles.section.title}>PAYMENT SUMMARY</Text>
+            <View style={styles.option.wrapper}>
+              <Text style={styles.option.name}>GoPay</Text>
+              <Text style={styles.option.change}>Change payment option</Text>
+            </View>
             <View style={styles.payment.wrapper}>
               <Text style={styles.payment.name}>Ticket Price</Text>
               <Text style={styles.payment.info}>Rp 4.000</Text>

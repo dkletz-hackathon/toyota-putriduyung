@@ -20,5 +20,12 @@ export default {
       ok: true,
       data: username.toLowerCase() === 'gantman' ? gantmanData : skellockData
     }
+  },
+  getParkingLots: (location, range) => {
+    const parkingLots = require('../Fixtures/parkingLot')
+    return {
+      ok: true,
+      data: parkingLots
+    }
   }
 }

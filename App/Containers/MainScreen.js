@@ -58,7 +58,7 @@ class MainScreen extends React.Component {
 
   closeModalAsDetail = () => {
     Animated.timing(this.state.modalYPos, {
-      toValue: -ModalHeight + 300,
+      toValue: -ModalHeight + 360,
       duration: 300
     }).start()
   }
@@ -126,8 +126,12 @@ class MainScreen extends React.Component {
 
     this.isSearch = isSearch
 
+    console.log("count")
+
     if (!isSearch) {
       this.closeModalAsDetail()
+    } else {
+      this.closeModal()
     }
 
     return (

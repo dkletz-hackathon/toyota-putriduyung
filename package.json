@@ -24,12 +24,14 @@
     "git-hook": "npm run lint -s && npm run test -s"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^2.1.0",
     "apisauce": "1.0.3",
     "debounce": "^1.2.0",
     "format-json": "1.0.3",
     "identity-obj-proxy": "3.0.0",
     "jetifier": "^1.6.4",
     "lodash": "4.17.15",
+    "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "querystringify": "2.1.1",
     "ramda": "^0.26.1",
@@ -47,6 +49,7 @@
     "react-native-vector-icons": "6.1.0",
     "react-navigation": "3.11.0",
     "react-navigation-redux-helpers": "3.0.2",
+    "react-number-format": "^4.3.1",
     "react-redux": "6.0.1",
     "redux": "4.0.4",
     "redux-logger": "^3.0.6",

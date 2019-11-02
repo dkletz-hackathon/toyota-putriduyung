@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, PanResponder, Animated, Dimensions } from 'react-native'
+import { View, PanResponder, Animated, Dimensions, ActivityIndicator } from 'react-native'
 import {connect} from 'react-redux'
 
 import {ParkingLotsSelectors} from '../Redux/ParkingLotsRedux'
@@ -132,7 +132,7 @@ class MainScreen extends React.Component {
   }
 
   render () {
-    const { activeParkingLotId } = this.props
+    const { activeParkingLotId, fetching } = this.props
     const isSearch = activeParkingLotId === null || activeParkingLotId === undefined
 
     this.isSearch = isSearch
@@ -180,6 +180,11 @@ class MainScreen extends React.Component {
         >
           <ParkingLotsMap filters={this.state.filters} />
         </Animated.View>
+        { fetching
+          ? <ActivityIndicator
+            style={{position: 'absolute', top: 10, right: 10, zIndex: 2}}
+            color={'#0043EF'}
+          /> : null }
       </View>
     )
   }
@@ -188,6 +193,7 @@ class MainScreen extends React.Component {
 const mapStateToProps = state => {
   return {
     activeParkingLotId: state.parkingLots.activeParkingLotId,
+    fetching: state.parkingLots.fetching,
     getParkingLot: (id) => ParkingLotsSelectors.getParkingLot(state, id)
   }
 }

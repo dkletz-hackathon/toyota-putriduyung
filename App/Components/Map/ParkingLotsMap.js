@@ -84,25 +84,29 @@ class ParkingLotsMap extends Component {
         onPanDrag={this.onPanDrag}
         showsUserLocation
       >
-        {parkingLots ? parkingLots.map(parkingLot => (
-          <Marker
-            onPress={() => {
-              setActive(parkingLot.id)
-            }}
-            coordinate={{
-              latitude: parkingLot.latitude,
-              longitude: parkingLot.longitude
-            }}
-            title={parkingLot.name}
+        {parkingLots ? parkingLots.map((parkingLot, index) => {
+          console.log(parkingLot.size, index)
+          return (
+            <Marker
+              key={`${parkingLot.id}${parkingLot.size}`}
+              onPress={() => {
+                setActive(parkingLot.id)
+              }}
+              coordinate={{
+                latitude: parkingLot.latitude,
+                longitude: parkingLot.longitude
+              }}
+              title={parkingLot.name}
           >
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <View style={{zIndex: 1, position: 'absolute'}}>
-                <Text style={mapText}>{parkingLot.size}</Text>
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <View style={{zIndex: 1, position: 'absolute'}}>
+                  <Text style={mapText}>{parkingLot.size}</Text>
+                </View>
+                <Image style={{width: 40, height: 40}} source={require('../../Images/circle.png')} />
               </View>
-              <Image style={{width: 40, height: 40}} source={require('../../Images/circle.png')} />
-            </View>
-          </Marker>
-        )) : null}
+            </Marker>
+          )
+        }) : null}
       </MapView>
     )
   }

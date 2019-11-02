@@ -1,6 +1,8 @@
 import React from 'react'
 import {View, Text, ScrollView, TouchableOpacity} from 'react-native'
 import Icon from '../Icon'
+import Button from '../Button'
+import {withNavigation} from 'react-navigation'
 import {ApplicationStyles} from '../../Themes'
 
 const filter = {
@@ -78,50 +80,9 @@ const styles = {
   }
 }
 
-export default class Detail extends React.Component {
+class Detail extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
-      filters: [
-        {
-          name: 'Sedan',
-          icon: 'sedan',
-          checked: false
-        },
-        {
-          name: 'Motorcycle',
-          icon: 'motor',
-          checked: false
-        },
-        {
-          name: 'Minivan',
-          icon: 'van',
-          checked: false
-        }
-      ]
-    }
-    this.filterStyle = this.filterStyle.bind(this)
-  }
-
-  filterStyle (checked) {
-    return checked ? styles.filter.checked : styles.filter.unchecked
-  }
-
-  setFilter (i) {
-    const {onChangeFilters} = this.props
-    let {filters} = this.state
-    filters[i].checked = !filters[i].checked
-    if (filters[i].checked) {
-      if (filters[i].name === 'Sedan') filters[i].icon = 'sedan_white'
-      if (filters[i].name === 'Minivan') filters[i].icon = 'van_white'
-      if (filters[i].name === 'Motorcycle') filters[i].icon = 'motor_white'
-    } else {
-      if (filters[i].name === 'Sedan') filters[i].icon = 'sedan'
-      if (filters[i].name === 'Minivan') filters[i].icon = 'van'
-      if (filters[i].name === 'Motorcycle') filters[i].icon = 'motor'
-    }
-    onChangeFilters(filters)
-    this.setState({filters})
   }
 
   render () {
@@ -132,30 +93,13 @@ export default class Detail extends React.Component {
           <Icon icon='map' style={styles.address.icon} />
           <Text style={styles.address.text}>Jl. Letjen S. Parman No.28, Duren Sel., Kec. Grogol petamburan, Kota Jakarta Barat</Text>
         </View>
-        <View style={ApplicationStyles.section.wrapper}>
-          <Text style={ApplicationStyles.section.title}>FILTER</Text>
-          <ScrollView style={styles.carousel} horizontal showsHorizontalScrollIndicator={false}>
-            {
-              this.state.filters.map((f, i) => {
-                return (
-                  <TouchableOpacity
-                    key={i}
-                    style={this.filterStyle(f.checked).wrapper}
-                    activeOpacity={0.8}
-                    onPress={() => this.setFilter(i)}
-                  >
-                    <Icon icon={f.icon} style={styles.filter.icon} />
-                    <Text style={this.filterStyle(f.checked).name}>{f.name}</Text>
-                  </TouchableOpacity>
-                )
-              })
-            }
-          </ScrollView>
-        </View>
-        <View style={ApplicationStyles.section.wrapper}>
-          <Text style={ApplicationStyles.section.title}>FEATURES</Text>
-        </View>
+        <Button
+          text='Book Parking Space'
+          onPress={() => this.props.navigation.navigate('Checkout')}
+        />
       </View>
     )
   }
 }
+
+export default withNavigation(Detail)

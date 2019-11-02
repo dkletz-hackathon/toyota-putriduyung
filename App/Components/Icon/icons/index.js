@@ -7,5 +7,7 @@ export const icons = {
   van: require('./van.png'),
   sedan_white: require('./sedan_white.png'),
   motor_white: require('./motor_white.png'),
-  van_white: require('./van_white.png')
+  van_white: require('./van_white.png'),
+  car: require('./car.png'),
+  time: require('./time.png')
 };

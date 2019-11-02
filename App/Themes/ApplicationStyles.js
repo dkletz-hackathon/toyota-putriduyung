@@ -6,6 +6,15 @@ import Colors from './Colors'
 // Similar to an XML fragment layout in Android
 
 const ApplicationStyles = {
+  section: {
+    title: {
+      color: '#616161',
+      fontWeight: '600',
+      fontSize: 12,
+      letterSpacing: 1,
+      marginBottom: 25
+    }
+  },
   screen: {
     mainContainer: {
       flex: 1,

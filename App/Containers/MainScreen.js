@@ -62,7 +62,8 @@ export default class MainScreen extends React.Component {
 
   componentWillMount () {
     this._panResponder = PanResponder.create({
-      onMoveShouldSetResponderCapture: (_, gestureState) => {
+      onMoveShouldSetResponderCapture: () => true,
+      onMoveShouldSetPanResponder: (_, gestureState) => {
         const {dx, dy} = gestureState
         return !((dx > 2 || dx <= -2) || (dy > 2 || dy <= -2))
       },

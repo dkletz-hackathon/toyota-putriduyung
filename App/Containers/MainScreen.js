@@ -90,7 +90,11 @@ class MainScreen extends React.Component {
 
       onPanResponderRelease: (e, {vx, vy}) => {
         if (vy > VelocityModalClose) {
-          this.closeModal()
+          if (this.isSearch) {
+            this.closeModal()
+          } else {
+            this.closeModalAsDetail()
+          }
         } else {
           this.openModal()
         }
@@ -117,11 +121,10 @@ class MainScreen extends React.Component {
   }
 
   render () {
-    const { activeParkingLotId, getParkingLot } = this.props
-    const activeParkingLot = getParkingLot(activeParkingLotId)
-    const isSearch = activeParkingLot === null || activeParkingLot === undefined
+    const { activeParkingLotId } = this.props
+    const isSearch = activeParkingLotId === null || activeParkingLotId === undefined
 
-    console.log(activeParkingLot, isSearch)
+    this.isSearch = isSearch
 
     if (!isSearch) {
       this.closeModalAsDetail()

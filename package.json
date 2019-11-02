@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "apisauce": "1.0.3",
+    "debounce": "^1.2.0",
     "format-json": "1.0.3",
     "identity-obj-proxy": "3.0.0",
     "jetifier": "^1.6.4",

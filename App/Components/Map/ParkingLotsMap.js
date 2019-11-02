@@ -5,6 +5,7 @@ import {Dimensions, View, Image, Text} from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
 import Creators, {ParkingLotsSelectors} from '../../Redux/ParkingLotsRedux'
+import { remove } from 'ramda'
 
 const InitialRegion = {
   latitude: -6.2290459,
@@ -51,6 +52,13 @@ class ParkingLotsMap extends Component {
     fetchParkingLots(region, DefaultRange)
   }
 
+  onPanDrag = () => {
+    const {activeParkingLotId, removeActive} = this.props
+    if (activeParkingLotId !== null && activeParkingLotId !== undefined) {
+      removeActive()
+    }
+  }
+
   render () {
     const { getParkingLots, filters, setActive } = this.props
     const parkingLots = getParkingLots(filters)
@@ -60,6 +68,7 @@ class ParkingLotsMap extends Component {
         style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}
         initialRegion={InitialRegion}
         onRegionChangeComplete={this.onRegionChange}
+        onPanDrag={this.onPanDrag}
         showsUserLocation
       >
         {parkingLots ? parkingLots.map(parkingLot => (
@@ -88,13 +97,15 @@ class ParkingLotsMap extends Component {
 const mapStateToProps = state => {
   return {
     getParkingLots: (filters) => ParkingLotsSelectors.getParkingLots(state, filters),
-    searchLocation: state.search.location
+    searchLocation: state.search.location,
+    activeParkingLotId: state.parkingLots.activeParkingLotId
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     fetchParkingLots: (location, range) => dispatch(Creators.parkingLotsRequest({ location, range })),
+    removeActive: () => dispatch(Creators.removeActiveParkingLot()),
     setActive: (id) => dispatch(Creators.setActiveParkingLotId(id))
   }
 }

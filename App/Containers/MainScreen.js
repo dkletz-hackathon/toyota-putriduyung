@@ -91,26 +91,15 @@ export default class MainScreen extends React.Component {
   render () {
     return (
       <View style={styles.container}>
-        <Animated.View
+        <View
           style={{...styles.modal.wrapper,
-            bottom: this.state.modalYPos.interpolate({
-              inputRange: [
-                -ModalHeight + SearchHeight,
-                0
-              ],
-              outputRange: [
-                -ModalHeight + SearchHeight,
-                0
-              ],
-              extrapolate: 'clamp'
-            })}}
-          {...this._panResponder.panHandlers}
+            bottom: 0}}
         >
           <View style={{alignItems: 'center'}}>
             <View style={styles.modal.drag} />
           </View>
           <Detail />
-        </Animated.View>
+        </View>
         <ParkingLotsMap />
       </View>
     )

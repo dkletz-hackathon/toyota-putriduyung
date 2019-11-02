@@ -128,7 +128,7 @@ export default class MainScreen extends React.Component {
           <View style={{alignItems: 'center'}}>
             <View style={styles.modal.drag} />
           </View>
-          <Detail onChangeFilters={this.onChangeFilters} />
+          <Search onChangeFilters={this.onChangeFilters} />
         </Animated.View>
         <ParkingLotsMap filters={this.state.filters} />
       </View>

@@ -144,14 +144,17 @@ class Search extends React.Component {
       ],
       features: [
         {
+          value: 'disabled',
           name: 'Disabled',
           checked: false
         },
         {
+          value: 'woman',
           name: 'Women Parking',
           checked: false
         },
         {
+          value: 'cover',
           name: 'Covered',
           checked: false
         }
@@ -165,15 +168,15 @@ class Search extends React.Component {
     search(query)
   }
 
-  filterStyle(checked) {
+  filterStyle (checked) {
     return checked ? styles.filter.checked : styles.filter.unchecked
   }
 
-  featureStyle(checked) {
+  featureStyle (checked) {
     return checked ? styles.feature.checked : styles.feature.unchecked
   }
 
-  setFilter(i) {
+  setFilter (i) {
     const {onChangeFilters} = this.props
     let {filters} = this.state
     filters[i].checked = !filters[i].checked
@@ -190,10 +193,12 @@ class Search extends React.Component {
     this.setState({filters})
   }
 
-  setFeature(i) {
+  setFeature (i) {
+    const {onChangeFeatures} = this.props
     let {features} = this.state
     features[i].checked = !features[i].checked
     this.setState({features})
+    onChangeFeatures(features)
   }
 
   render () {
@@ -226,7 +231,7 @@ class Search extends React.Component {
         </View>
         <View style={ApplicationStyles.section.wrapper}>
           <Text style={ApplicationStyles.section.title}>VEHICLE TYPE</Text>
-          <ScrollView style={styles.carousel} horizontal={true}>
+          <ScrollView style={styles.carousel} horizontal>
             {
               this.state.filters.map((f, i) => {
                 return (

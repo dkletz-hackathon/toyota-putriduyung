@@ -45,7 +45,8 @@ class MainScreen extends React.Component {
       modalYPos: new Animated.Value(
         -ModalHeight + SearchHeight
       ),
-      filters: []
+      filters: [],
+      features: []
     }
   }
 
@@ -131,6 +132,14 @@ class MainScreen extends React.Component {
     })
   }
 
+  onChangeFeatures = features => {
+    const newFeatures = features.filter(feature => feature.checked)
+      .map(feature => feature.value)
+    this.setState({
+      features: newFeatures
+    })
+  }
+
   render () {
     const { activeParkingLotId, fetching } = this.props
     const isSearch = activeParkingLotId === null || activeParkingLotId === undefined
@@ -159,7 +168,7 @@ class MainScreen extends React.Component {
           </View>
           {
             isSearch
-              ? <Search onChangeFilters={this.onChangeFilters} />
+              ? <Search onChangeFilters={this.onChangeFilters} onChangeFeatures={this.onChangeFeatures} />
               : <Detail />
           }
         </Animated.View>
@@ -178,7 +187,7 @@ class MainScreen extends React.Component {
               extrapolate: 'clamp'
             })}}
         >
-          <ParkingLotsMap filters={this.state.filters} />
+          <ParkingLotsMap filters={this.state.filters} features={this.state.features} />
         </Animated.View>
         { fetching
           ? <ActivityIndicator

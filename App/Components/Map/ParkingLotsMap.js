@@ -73,8 +73,8 @@ class ParkingLotsMap extends Component {
   }
 
   render () {
-    const { getParkingLots, filters, setActive } = this.props
-    const parkingLots = getParkingLots(filters)
+    const { getParkingLots, filters, features, setActive } = this.props
+    const parkingLots = getParkingLots(filters, features)
     return (
       <MapView
         ref={ref => { this.map = ref }}
@@ -84,8 +84,7 @@ class ParkingLotsMap extends Component {
         onPanDrag={this.onPanDrag}
         showsUserLocation
       >
-        {parkingLots ? parkingLots.map((parkingLot, index) => {
-          console.log(parkingLot.size, index)
+        {parkingLots ? parkingLots.filter(parkingLot => parkingLot.size > 0).map((parkingLot, index) => {
           return (
             <Marker
               key={`${parkingLot.id}${parkingLot.size}`}
@@ -98,11 +97,11 @@ class ParkingLotsMap extends Component {
               }}
               title={parkingLot.name}
           >
-              <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                <View style={{zIndex: 1, position: 'absolute'}}>
+              <View style={{justifyContent: 'center', alignItems: 'center', width: 58, height: 58}}>
+                <View style={{zIndex: 1, position: 'absolute', paddingBottom: 10}}>
                   <Text style={mapText}>{parkingLot.size}</Text>
                 </View>
-                <Image style={{width: 40, height: 40}} source={require('../../Images/circle.png')} />
+                <Image style={{width: 55, height: 55}} source={require('../../Images/circle.png')} />
               </View>
             </Marker>
           )
@@ -114,7 +113,7 @@ class ParkingLotsMap extends Component {
 
 const mapStateToProps = state => {
   return {
-    getParkingLots: (filters) => ParkingLotsSelectors.getParkingLots(state, filters),
+    getParkingLots: (filters, features) => ParkingLotsSelectors.getParkingLots(state, filters, features),
     searchLocation: state.search.location,
     activeParkingLotId: state.parkingLots.activeParkingLotId
   }

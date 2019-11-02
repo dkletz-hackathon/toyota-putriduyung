@@ -1,6 +1,8 @@
 import React from 'react'
 import {View, Text, ScrollView, TouchableOpacity} from 'react-native'
 import Icon from '../Icon'
+import Button from '../Button'
+import {withNavigation} from 'react-navigation'
 import {ApplicationStyles} from '../../Themes'
 
 const filter = {
@@ -78,7 +80,7 @@ const styles = {
   }
 }
 
-export default class Detail extends React.Component {
+class Detail extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -153,7 +155,13 @@ export default class Detail extends React.Component {
         <View style={ApplicationStyles.section.wrapper}>
           <Text style={ApplicationStyles.section.title}>FEATURES</Text>
         </View>
+        <Button
+          text="Book Parking Space"
+          onPress={() => this.props.navigation.navigate('Checkout')}
+        />
       </View>
     )
   }
 }
+
+export default withNavigation(Detail)

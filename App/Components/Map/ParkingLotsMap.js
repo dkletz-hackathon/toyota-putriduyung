@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import MapView, {Marker} from 'react-native-maps'
-import {Dimensions, View, Image, Text} from 'react-native'
+import {Dimensions, View, Image, Text, PermissionsAndroid} from 'react-native'
+import geolocation from '@react-native-community/geolocation'
 import debounce from 'debounce'
 
 import Creators, {ParkingLotsSelectors} from '../../Redux/ParkingLotsRedux'
@@ -32,12 +33,14 @@ class ParkingLotsMap extends Component {
   }
 
   componentDidMount () {
-    const {fetchParkingLots} = this.props
+    const {fetchParkingLots, setUserLocation} = this.props
     this.intervalCall = setInterval(() => fetchParkingLots(this.state.region, DefaultRange), 10500)
+    this.geoWatchId = geolocation.watchPosition(position => setUserLocation(position.coords))
   }
 
   componentWillUnmount () {
     clearInterval(this.intervalCall)
+    geolocation.clearWatch(this.geoWatchId)
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -72,11 +75,18 @@ class ParkingLotsMap extends Component {
     }
   }
 
+  onMapReady = () => {
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+    )
+  }
+
   render () {
     const { getParkingLots, filters, features, setActive } = this.props
     const parkingLots = getParkingLots(filters, features)
     return (
       <MapView
+        onMapReady={this.onMapReady}
         ref={ref => { this.map = ref }}
         style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}
         initialRegion={InitialRegion}
@@ -123,7 +133,8 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchParkingLots: (location, range) => dispatch(Creators.parkingLotsRequest({ location, range })),
     removeActive: () => dispatch(Creators.removeActiveParkingLot()),
-    setActive: (id) => dispatch(Creators.setActiveParkingLotId(id))
+    setActive: (id) => dispatch(Creators.setActiveParkingLotId(id)),
+    setUserLocation: (location) => dispatch(Creators.setUserLocation(location))
   }
 }
 

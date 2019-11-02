@@ -13,5 +13,6 @@ export const icons = {
   car_2: require('./car_2.png'),
   motor_2: require('./motor_2.png'),
   disabled: require('./disabled.png'),
-  ladies: require('./ladies.png')
+  ladies: require('./ladies.png'),
+  navigation: require('./navigation.png')
 };

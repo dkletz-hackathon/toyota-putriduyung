@@ -24,7 +24,21 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const ParkingLotsSelectors = {
-  getData: state => state.parkingLots.data
+  getParkingLots: (state, filters) => {
+    if (state.parkingLots.data === null) {
+      return null
+    }
+    if (filters === undefined || filters.length === 0) {
+      filters = [0, 1, 2]
+    }
+    return state.parkingLots.data.map(parkingLot => ({
+      ...parkingLot,
+      size: parkingLot.spaces
+        .filter(space => filters.includes(space.size))
+        .filter(space => space.empty)
+        .reduce((total) => total + 1, 0)
+    }))
+  }
 }
 
 /* ------------- Reducers ------------- */
@@ -36,7 +50,7 @@ export const request = (state, { location, range }) =>
 // successful api lookup
 export const success = (state, action) => {
   const { payload } = action
-  return state.merge({ fetching: false, error: null, payload })
+  return state.merge({ fetching: false, error: null, data: payload })
 }
 
 // Something went wrong somewhere.

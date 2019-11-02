@@ -1,7 +1,10 @@
 import React from 'react'
 import {View, Text, StyleSheet, TextInput} from 'react-native'
+import {connect} from 'react-redux'
+
 import Icon from '../../Components/Icon'
 import {ApplicationStyles} from '../../Themes'
+import Creators from '../../Redux/SearchRedux'
 
 const styles = StyleSheet.create({
   searchWrapper: {
@@ -34,27 +37,38 @@ const styles = StyleSheet.create({
   }
 })
 
-export default class Search extends React.Component {
-  constructor(props) {
+class Search extends React.Component {
+  constructor (props) {
     super(props)
     this.state = {
       recent: [1, 2, 3]
     }
   }
 
-  render() {
+  onSubmit = () => {
+    const {query} = this.state
+    const {search} = this.props
+    search(query)
+  }
+
+  render () {
     return (
       <View>
         <View style={styles.searchWrapper}>
-          <Icon style={styles.icon} icon="search" />
-          <TextInput style={styles.searchText} placeholder="Search for a parking space..." />
+          <Icon style={styles.icon} icon='search' />
+          <TextInput
+            style={styles.searchText}
+            placeholder='Search for a parking space...'
+            onChangeText={text => this.setState({ query: text })}
+            onSubmitEditing={this.onSubmit}
+          />
         </View>
         <Text style={ApplicationStyles.section.title}>RECENT SEARCH</Text>
         {
           this.state.recent.map(r => {
             return (
               <View style={styles.recentWrapper}>
-                <Icon icon="map" style={{width: 25, height: 25}} />
+                <Icon icon='map' style={{width: 25, height: 25}} />
                 <View style={styles.recentInfo}>
                   <Text style={styles.recentName}>Hehe</Text>
                   <Text style={styles.recentAddress}>Jl. Guntur 7, Kayuringin Jaya, Bekasi Selatan</Text>
@@ -67,3 +81,14 @@ export default class Search extends React.Component {
     )
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    search: (query) => dispatch(Creators.searchRequest({ address: query }))
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Search)

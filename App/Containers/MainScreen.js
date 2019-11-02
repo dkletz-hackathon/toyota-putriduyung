@@ -42,7 +42,8 @@ export default class MainScreen extends React.Component {
     this.state = {
       modalYPos: new Animated.Value(
         -ModalHeight + SearchHeight
-      )
+      ),
+      filters: []
     }
   }
 
@@ -88,19 +89,48 @@ export default class MainScreen extends React.Component {
     })
   }
 
+  onChangeFilters = filters => {
+    const newFilters = filters.filter(filter => filter.checked)
+      .map(filter => {
+        switch (filter.name) {
+          case 'Sedan':
+            return 1
+          case 'Motorcycle':
+            return 0
+          case 'Minivan':
+            return 2
+        }
+      }
+    )
+    this.setState({
+      filters: newFilters
+    })
+  }
+
   render () {
     return (
       <View style={styles.container}>
-        <View
+        <Animated.View
           style={{...styles.modal.wrapper,
-            bottom: 0}}
+            bottom: this.state.modalYPos.interpolate({
+              inputRange: [
+                -ModalHeight + SearchHeight,
+                0
+              ],
+              outputRange: [
+                -ModalHeight + SearchHeight,
+                0
+              ],
+              extrapolate: 'clamp'
+            })}}
+          {...this._panResponder.panHandlers}
         >
           <View style={{alignItems: 'center'}}>
             <View style={styles.modal.drag} />
           </View>
-          <Detail />
-        </View>
-        <ParkingLotsMap />
+          <Detail onChangeFilters={this.onChangeFilters} />
+        </Animated.View>
+        <ParkingLotsMap filters={this.state.filters} />
       </View>
     )
   }

@@ -36,7 +36,7 @@ export const request = (state, { location, range }) =>
 // successful api lookup
 export const success = (state, action) => {
   const { payload } = action
-  return state.merge({ fetching: false, error: null, payload })
+  return state.merge({ fetching: false, error: null, data: payload })
 }
 
 // Something went wrong somewhere.

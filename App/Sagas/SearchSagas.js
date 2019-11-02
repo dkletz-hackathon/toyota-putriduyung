@@ -11,22 +11,33 @@
 *************************************************************/
 
 import { call, put } from 'redux-saga/effects'
-import ParkingLotsActions from '../Redux/ParkingLotsRedux'
-// import { ParkingLotsSelectors } from '../Redux/ParkingLotsRedux'
+import SearchActions from '../Redux/SearchRedux'
+// import { SearchSelectors } from '../Redux/SearchRedux'
 
-export function * getParkingLots (api, action) {
-  const { location, range } = action
+export function * getSearch (api, action) {
+  const { data } = action
   // get current data from Store
-  // const currentData = yield select(ParkingLotsSelectors.getData)
+  // const currentData = yield select(SearchSelectors.getData)
   // make the call to the api
-  const response = yield call(api.getParkingLots, location, range)
+  const response = yield call(api.getsearch, data)
 
   // success?
   if (response.ok) {
     // You might need to change the response here - do this with a 'transform',
     // located in ../Transforms/. Otherwise, just pass the data back from the api.
-    yield put(ParkingLotsActions.parkingLotsSuccess(response.data))
+    yield put(SearchActions.searchSuccess(response.data))
   } else {
-    yield put(ParkingLotsActions.parkingLotsFailure())
+    yield put(SearchActions.searchFailure())
+  }
+}
+
+export function * getLatLong (api, action) {
+  const { address } = action
+  const response = yield call(api.getLatLong, address)
+
+  if (response.ok) {
+    yield put(SearchActions.searchSuccess(response.data))
+  } else {
+    yield put(SearchActions.searchFailure())
   }
 }

@@ -5,6 +5,8 @@ import { Provider } from 'react-redux'
 import RootContainer from './RootContainer'
 import createStore from '../Redux'
 
+console.disableYellowBox = true
+
 // create our store
 const store = createStore()
 
